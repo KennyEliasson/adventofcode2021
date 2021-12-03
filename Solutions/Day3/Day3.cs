@@ -20,13 +20,13 @@ namespace Solutions
         [Fact]
         public void Day3_Part1()
         {
-            var bitArrays = ParseInputToBitArrays("day3/day3input.txt", out var rows, out var rowLength);
+            var (bitArrays, rows, rowLength) = ParseInputToBitArrays("day3/day3input.txt");
             
             var gamma = new BitArray(rowLength);
             for (int i = 0; i < rowLength; i++)
             {
                 var howManySet = bitArrays.Count(x => x.Get(i));
-                if (howManySet > rows.Count / 2)
+                if (howManySet > rows / 2)
                 {
                     gamma.Set(i, true);
                 }
@@ -42,7 +42,7 @@ namespace Solutions
         [Fact]
         public void Day3_Part2()
         {
-            var bitArrays = ParseInputToBitArrays("day3/day3input.txt", out _, out _);
+            var (bitArrays, _, _) = ParseInputToBitArrays("day3/day3input.txt");
 
             var oxygenGeneratorRating = FindLastBitArray(bitArrays, 0, true).Reverse();
             var co2ScrubberRating = FindLastBitArray(bitArrays, 0, false).Reverse();
@@ -50,26 +50,14 @@ namespace Solutions
             _output.WriteLine($"Answer is {oxygenGeneratorRating.ToInt()*co2ScrubberRating.ToInt()}");
         }
 
-        private static List<BitArray> ParseInputToBitArrays(string fileName, out int rows, out int rowLength)
+        private static (List<BitArray> bitArrays, int rows, int rowLength) ParseInputToBitArrays(string fileName)
         {
             var input = File.ReadAllLines(fileName).ToList();
-            var bitArrayList = new List<BitArray>();
-            rowLength = input[0].Length;
-            rows = input.Count;
+            var rowLength = input[0].Length;
+            var rows = input.Count;
 
-            foreach (var row in input)
-            {
-                var b = new BitArray(rowLength);
-                for (var i = 0; i < row.Length; i++)
-                {
-                    if (row[i] == '1')
-                        b.Set(i, true);
-                }
-
-                bitArrayList.Add(b);
-            }
-
-            return bitArrayList;
+            var bitArrayList = input.Select(row => new BitArray(row.Select(bit => bit == '1').ToArray())).ToList();
+            return (bitArrayList, rows, rowLength);
         }
 
         private BitArray FindLastBitArray(List<BitArray> bitArrays, int index, bool findMostCommon)
