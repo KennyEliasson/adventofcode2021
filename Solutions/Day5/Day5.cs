@@ -32,20 +32,16 @@ namespace Solutions
             {
                 if (Start.row == End.row)
                 {
-                    if (Start.col < End.col)
-                    {
-                        return Enumerable.Range(Start.col, (End.col - Start.col)+1).Select(col => new Coord(col, Start.row));
-                    }
-                    return Enumerable.Range(End.col, (Start.col - End.col)+1).Select(col => new Coord(col, Start.row));
+                    var minCol = Math.Min(Start.col, End.col);
+                    var maxCol = Math.Max(Start.col, End.col);
+                    return Enumerable.Range(minCol, (maxCol - minCol)+1).Select(col => new Coord(col, Start.row));
                 }
 
                 if(Start.col == End.col)
                 {
-                    if (Start.row < End.row)
-                    {
-                        return Enumerable.Range(Start.row, (End.row - Start.row)+1).Select(row => new Coord(Start.col, row));
-                    }
-                    return Enumerable.Range(End.row, (Start.row - End.row)+1).Select(row => new Coord(Start.col, row));
+                    var minRow = Math.Min(Start.row, End.row);
+                    var maxRow = Math.Max(Start.row, End.row);
+                    return Enumerable.Range(minRow, (maxRow - minRow)+1).Select(row => new Coord(Start.col, row));
                 }
 
                 if (!buildDiagonal)
