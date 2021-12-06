@@ -36,7 +36,7 @@ namespace Solutions
                 return null;
             }
         }
-
+    
         [Fact]
         public void Day6_Part1()
         {
@@ -46,7 +46,7 @@ namespace Solutions
 
             for (int i = 0; i < days; i++)
             {
-                var newFishes = new List<LanternFish>(fishes.Count*2);
+                var newFishes = new List<LanternFish>();
                 foreach (var fish in fishes)
                 {
                     var lanternFish = fish.Decrease();
